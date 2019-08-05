@@ -1,0 +1,38 @@
+version: '3'
+services:
+  db:
+    container_name: "db"
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    restart: always
+  app:
+    container_name: thorntail-example-thorntail
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: thorntail-example-thorntail:latest
+    environment:
+#      - DB_URI=jdbc:mysql://db:3307/test?useSSL=false
+       - SWARM_DATASOURCES_DATA_DASH_SOURCES_SOMEDS_CONNECTION_DASH_URL=jdbc:mysql://db:3307/test?useSSL=false
+#       - THORNTAIL_DATASOURCES_DATA_DASH_SOURCES_SOMEDS_DRIVER_DASH_NAME=mysql
+#       - THORNTAIL_DATASOURCES_DATA_DASH_SOURCES_SOMEDS_USER_DASH_NAME=root
+#       - THORNTAIL_DATASOURCES_DATA_DASH_SOURCES_SOMEDS_PASSWORD=root
+    links:
+      - db:db
+    ports:
+      - "8443:8443"
+    depends_on:
+      - db
+# Volumes
+volumes:
+  db-data:
+networks:
+    default:
+        driver: bridge

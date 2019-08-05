@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.thorntail.mozzy</groupId>
+	<artifactId>thorntail-example</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<name>Thorntail Example</name>
+
+	<packaging>war</packaging>
+
+	<properties>
+		<version.thorntail>2.5.0.Final</version.thorntail>
+		<deltaspike.version>1.7.1</deltaspike.version>
+		<version.resteasy>3.0.19.Final</version.resteasy>
+		<maven.min.version>3.2.1</maven.min.version>
+		<version.mysql>5.1.38</version.mysql>
+		<version.lombok>1.16.4</version.lombok>
+		<version.org.arquillian.graphene>2.1.0.Final</version.org.arquillian.graphene>
+		<version.fest-assert>1.4</version.fest-assert>
+		<version.mockito>2.2.28</version.mockito>
+		<version.junit>4.12</version.junit>
+		<version.h2>1.4.187</version.h2>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+
+		<pluginRepository>
+			<id>spring</id>
+			<name>Spring releases</name>
+			<url>https://repo.spring.io/libs-release-remote/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.thorntail</groupId>
+				<artifactId>bom-all</artifactId>
+				<version>${version.thorntail}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.arquillian</groupId>
+				<artifactId>arquillian-bom</artifactId>
+				<version>1.1.12.Final</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.arquillian.extension</groupId>
+				<artifactId>arquillian-drone-bom</artifactId>
+				<version>2.0.1.Final</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.arquillian.graphene</groupId>
+				<artifactId>graphene-webdriver</artifactId>
+				<version>${version.org.arquillian.graphene}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.deltaspike.distribution</groupId>
+				<artifactId>distributions-bom</artifactId>
+				<version>${deltaspike.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${version.mockito}</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${version.junit}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.easytesting</groupId>
+				<artifactId>fest-assert</artifactId>
+				<version>${version.fest-assert}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>io.thorntail</groupId>
+					<artifactId>thorntail-maven-plugin</artifactId>
+					<version>${version.thorntail}</version>
+					<configuration>
+						<jvmArguments>
+							<jvmArgument>-Xmx128m</jvmArgument>
+						</jvmArguments>
+					</configuration>
+					<executions>
+						<execution>
+							<id>package</id>
+							<goals>
+								<goal>package</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>start</id>
+						</execution>
+						<execution>
+							<id>stop</id>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.19.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.19.1</version>
+					<configuration>
+						<systemPropertyVariables>
+							<org.apache.maven.user-settings>${session.request.userSettingsFile.path}</org.apache.maven.user-settings>
+						</systemPropertyVariables>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.6</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>-plugin</artifactId>
+					<version>1.10</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*IT.java</include>
+					</includes>
+					<systemPropertyVariables>
+						<phantomjs.binary.version>2.1.1</phantomjs.binary.version>
+						<org.apache.maven.user-settings>${session.request.userSettingsFile.path}</org.apache.maven.user-settings>
+					</systemPropertyVariables>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.thorntail</groupId>
+				<artifactId>thorntail-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>package</id>
+					</execution>
+					<execution>
+						<id>start</id>
+						<configuration>
+							<arguments>-Sh2</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop</id>
+					</execution>
+				</executions>
+			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>io.fabric8</groupId> -->
+<!-- 				<artifactId>docker-maven-plugin</artifactId> -->
+<!-- 				<version>0.28.0</version> -->
+<!-- 				<configuration> -->
+<!-- 					<dockerHost>https://localhost:2376</dockerHost> -->
+<!-- 					<certPath>src/main/dockerCerts</certPath> -->
+<!-- 					<useColor>true</useColor> -->
+<!-- 					<images> -->
+<!-- 						<image> -->
+<!-- 							<name>thorntail-example-thorntail</name> -->
+<!-- 							<build> -->
+<!-- 								<dockerFileDir>${project.basedir}</dockerFileDir> -->
+<!-- 							</build> -->
+<!-- 						</image> -->
+<!-- 					</images> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<!-- Thorntail Fractions -->
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>jaxrs</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>cdi</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>datasources</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>keycloak</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>logging</artifactId>
+		</dependency>
+
+		<!-- SWAGGER -->
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>swagger</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>swagger-webapp</artifactId>
+		</dependency>
+
+		<!-- MDB -->
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>messaging</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>ejb</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>management</artifactId>
+		</dependency>
+
+		<!-- DELTASPIKE -->
+		<dependency>
+			<groupId>org.apache.deltaspike.core</groupId>
+			<artifactId>deltaspike-core-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.deltaspike.core</groupId>
+			<artifactId>deltaspike-core-impl</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.deltaspike.modules</groupId>
+			<artifactId>deltaspike-jpa-module-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.deltaspike.modules</groupId>
+			<artifactId>deltaspike-jpa-module-impl</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.deltaspike.modules</groupId>
+			<artifactId>deltaspike-data-module-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.deltaspike.modules</groupId>
+			<artifactId>deltaspike-data-module-impl</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${version.mysql}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${version.lombok}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>arquillian</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-assert</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jackson2-provider</artifactId>
+			<version>${version.resteasy}</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-client</artifactId>
+			<version>3.0.12.Final</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${version.h2}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+</project>
