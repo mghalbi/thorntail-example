@@ -4,7 +4,7 @@ swarm:
       someDS:
         jndi-name: java:jboss/datasources
         driver-name: mysql
-        connection-url: jdbc:mysql://db:3306/test?useSSL=false
+        connection-url: jdbc:mysql://localhost:3306/mysql?useSSL=false
         user-name: root
         password: root
         valid-connection-checker-class-name: org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker

@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   db:
     container_name: "db"
@@ -11,19 +10,19 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     restart: always
-
   app:
     container_name: thorntail-example-thorntail
     build:
       context: .
       dockerfile: Dockerfile
     image: thorntail-example-thorntail:latest
+    environment:
+       - SWARM_DATASOURCES_DATA_DASH_SOURCES_SOMEDS_CONNECTION_DASH_URL=jdbc:mysql://db:3306/test?useSSL=false
     links:
       - db
     ports:
       - "8443:8443"
     depends_on:
       - db
-
 volumes:
   db-data: {}
