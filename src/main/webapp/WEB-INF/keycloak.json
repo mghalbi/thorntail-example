@@ -1,10 +1,11 @@
 {
   "realm": "MyRealm",
-  "auth-server-url": "http://localhost:8180/auth",
+  "auth-server-url": "http://keycloak:8080/keycloak/auth",
   "ssl-required": "external",
   "resource": "keydemo",
   "credentials": {
-    "secret": "3dc59dc1-6f7e-4124-8999-a0bd2ccc9c61"
+    "secret": "daba0cfc-3053-4038-9e8d-631f0d429d52"
   },
+  "use-resource-role-mappings": true,
   "confidential-port": 0
 }
