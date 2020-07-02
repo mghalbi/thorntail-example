@@ -17,7 +17,7 @@
 		<deltaspike.version>1.7.1</deltaspike.version>
 		<version.resteasy>3.0.19.Final</version.resteasy>
 		<maven.min.version>3.2.1</maven.min.version>
-		<version.mysql>5.1.38</version.mysql>
+		<version.mysql>8.0.16</version.mysql>
 		<version.lombok>1.16.4</version.lombok>
 		<version.org.arquillian.graphene>2.1.0.Final</version.org.arquillian.graphene>
 		<version.fest-assert>1.4</version.fest-assert>
